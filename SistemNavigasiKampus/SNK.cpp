@@ -8,7 +8,7 @@ void createGraph_103022300048_103022300011(Graph &G){ //Membuat graph
 void createBuilding_103022300048_103022300011(char newBuilding ,adrBuilding &B) { //Membuat rute
     B = new building;
 }
-adrBuilding allocateBuilding_103022300048_103022300011(infotypeBuilding infoBuilding); //alokasi elemen gedung
+adrBuilding allocateBuilding_103022300048_103022300011(infotypeBuilding infoBuilding){ //alokasi elemen gedung
 /*{Mengembalikan nilai pointer ke sebuah elemen gedung yang baru dialokasikan
  dengan infoBuilding(v) = infoBuilding, firstEdge(v) = nil, dan nextNode(v) = nil}*/
     adrBuilding P;
@@ -17,8 +17,9 @@ adrBuilding allocateBuilding_103022300048_103022300011(infotypeBuilding infoBuil
     firstJalan(P) = NULL;
     nextBuilding = NULL;
     return P;
+}
 
-adrRoute allocateJalan_103022300048_103022300011(infotypeJalan infoJalan); //alokasi elemen rute
+adrRoute allocateJalan_103022300048_103022300011(infotypeJalan infoJalan){//alokasi elemen rute
 /*{Mengembalikan nilai pointer ke sebuah elemen rute yang baru dialokasikan
  dengan infoRoute(R) = infoRoute dan nextEdge(R) = nil}*/
     adrJalan P;
@@ -26,6 +27,8 @@ adrRoute allocateJalan_103022300048_103022300011(infotypeJalan infoJalan); //alo
     info(P) = infoJalan;
     nextBuilding = NULL;
     return P;
+}
+
 
 void addBuilding_103022300048_103022300011(Graph &G, adrBuilding P) {
 /*{I.S. Mungkin ada atau tidak ada gedung di graph G
@@ -49,7 +52,7 @@ void addJalan_103022300048_103022300011(Graph &G, string J); //Menambah Rute
 void connecting_103022300048_103022300011(Graph &G, string b1, string b2); //Mengconnect antar building
 /*{I.S. Dua gedung (b1 dan b2) sudah ada di graph tetapi tidak saling terhubung
  F.S. Dibuat hubungan (edge/rute) di antara gedung b1 dan b2}*/
-adrBuilding findBuilding_103022300048_103022300011(Graph G, infotypeBuilding B); //Searching gedung
+adrBuilding findBuilding_103022300048_103022300011(Graph G, infotypeBuilding B){ //Searching gedung
 /*{Mengembalikan nilai pointer ke elemen gedung dengan nama B jika ditemukan
  atau NULL jika tidak ada gedung dengan nama tersebut di graph G}*/
     adrBuilding P;
@@ -67,6 +70,8 @@ adrBuilding findBuilding_103022300048_103022300011(Graph G, infotypeBuilding B);
             return NULL;
         }
     }
+}
+
 adrJalan findJalan_103022300048_103022300011(Graph G, infotypeJalan J); //Searching rute
 /*{Mengembalikan nilai pointer ke elemen rute dengan informasi R jika ditemukan
  atau NULL jika tidak ada rute dengan informasi tersebut di graph G}*/
