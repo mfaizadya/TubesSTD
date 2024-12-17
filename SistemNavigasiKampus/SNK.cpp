@@ -2,88 +2,128 @@
 
 void createGraph_103022300048_103022300011(Graph &G){ //Membuat graph
 /*{I.S. Belum terdefinisi sebuah graph
- F.S. Telah dibuat sebuah graph baru dengan start(G) = nil}*/
- start(G) == NULL;
-}
-void createBuilding_103022300048_103022300011(char newBuilding ,adrBuilding &B) { //Membuat rute
-    B = new building;
-}
+ F.S. Telah dibuat sebuah graph baru dengan start(G) = NULL}*/
+    start(G) = NULL;
+ }
+
 adrBuilding allocateBuilding_103022300048_103022300011(infotypeBuilding infoBuilding){ //alokasi elemen gedung
-/*{Mengembalikan nilai pointer ke sebuah elemen gedung yang baru dialokasikan
- dengan infoBuilding(v) = infoBuilding, firstEdge(v) = nil, dan nextNode(v) = nil}*/
-    adrBuilding P;
-    P = new elmtBuilding;
+/*{Mengembalikan pointer ke elemen building yang baru dengan infoBuilding terisi, firstJalan = NULL, dan nextBuilding = NULL}*/
+    adrBuilding P = new elmtBuilding;
     info(P) = infoBuilding;
     firstJalan(P) = NULL;
-    nextBuilding = NULL;
+    nextBuilding(P) = NULL;
     return P;
 }
 
-adrRoute allocateJalan_103022300048_103022300011(infotypeJalan infoJalan){//alokasi elemen rute
-/*{Mengembalikan nilai pointer ke sebuah elemen rute yang baru dialokasikan
- dengan infoRoute(R) = infoRoute dan nextEdge(R) = nil}*/
-    adrJalan P;
-    P = new elmtJalan;
-    info(P) = infoJalan;
-    nextBuilding = NULL;
+adrJalan allocateJalan_103022300048_103022300011(infotypeJalan info, adrBuilding destination){ //alokasi elemen rute
+/*{Mengembalikan pointer ke elemen jalan yang baru dengan info terisi, destination terisi, dan nextJalan = NULL}*/
+    adrJalan P = new elmtJalan;
+    info(P) = info;
+    nextJalan(P) = NULL;
+    destination(P) = destination;
     return P;
 }
 
-
-void addBuilding_103022300048_103022300011(Graph &G, adrBuilding P) {
-/*{I.S. Mungkin ada atau tidak ada gedung di graph G
- F.S. Sebuah gedung baru dengan nama B ditambahkan ke graph G,
-      menjadi elemen terakhir dalam daftar building (nextNode) atau menjadi start(G) jika kosong}*/
-    adrBuilding Q;
+void addBuilding_103022300048_103022300011(Graph &G, infotypeBuilding infoBuilding){ //Menambah gedung
+/*{I.S. Graph mungkin kosong atau sudah memiliki building
+ F.S. Building baru ditambahkan sebagai elemen terakhir pada graph}*/
+    adrBuilding P = allocateBuilding(infoBuilding);
     if (start(G) == NULL) {
         start(G) = P;
-    }else {
-            Q = start(G);
-            while (nextBuilding(Q) != NULL) {
-                Q = nextBuilding(Q)
-            }
-            nextBuilding(Q)
-    }
-}
-
-void addJalan_103022300048_103022300011(Graph &G, string J); //Menambah Rute
-/*{I.S. Mungkin ada atau tidak ada rute di graph G
- F.S. Sebuah rute baru dengan informasi R ditambahkan di antara gedung yang relevan di graph G}*/
-void connecting_103022300048_103022300011(Graph &G, string b1, string b2); //Mengconnect antar building
-/*{I.S. Dua gedung (b1 dan b2) sudah ada di graph tetapi tidak saling terhubung
- F.S. Dibuat hubungan (edge/rute) di antara gedung b1 dan b2}*/
-adrBuilding findBuilding_103022300048_103022300011(Graph G, infotypeBuilding B){ //Searching gedung
-/*{Mengembalikan nilai pointer ke elemen gedung dengan nama B jika ditemukan
- atau NULL jika tidak ada gedung dengan nama tersebut di graph G}*/
-    adrBuilding P;
-    adrBuilding Q;
-    if (start(G) == NULL) {
-        return NULL
-    }else {
-        P = start(G);
-        while(infoBuilding(P) != B) && (nextBuilding(P) != NULL) {
+    } else {
+        adrBuilding Q = start(G);
+        while (nextBuilding(Q) != NULL) {
             Q = nextBuilding(Q);
         }
-        if (infoBuilding(P) == B) {
-            return P;
-        }else {
-            return NULL;
+        nextBuilding(Q) = P;
+    }
+ }
+
+void addJalan_103022300048_103022300011(Graph &G, string fromBuilding, string toBuilding, int jarak){ //Menambah Rute
+/*{I.S. Dua building dengan nama fromBuilding dan toBuilding ada dalam graph
+ F.S. Jalan baru ditambahkan dari fromBuilding ke toBuilding dengan jarak tertentu}*/
+    adrBuilding B1 = findBuilding(G, fromBuilding);
+    adrBuilding B2 = findBuilding(G, toBuilding);
+    if (B1 != NULL && B2 != NULL) {
+        infotypeJalan info;
+        info.jarak = jarak;
+        adrJalan newJalan = allocateJalan(info, B2);
+        adrJalan J = firstJalan(B1);
+        if (J == NULL) {
+            firstJalan(B1) = newJalan;
+        } else {
+            while (nextJalan(J) != NULL) {
+                J = nextJalan(J);
+            }
+            nextJalan(J) = newJalan;
         }
     }
+ }
+
+adrBuilding findBuilding_103022300048_103022300011(Graph G, string buildingName){ //Searching gedung
+/*{Mengembalikan pointer ke elemen building dengan nama buildingName jika ditemukan, NULL jika tidak}*/
+    adrBuilding P = start(G);
+    while (P != NULL) {
+        if (info(P).buildingName == buildingName) {
+            return P;
+        }
+        P = nextBuilding(P);
+    }
+    return NULL;
 }
 
-adrJalan findJalan_103022300048_103022300011(Graph G, infotypeJalan J); //Searching rute
-/*{Mengembalikan nilai pointer ke elemen rute dengan informasi R jika ditemukan
- atau NULL jika tidak ada rute dengan informasi tersebut di graph G}*/
-void deleteLastJalan_103022300048_103022300011(Graph &G, adrBuilding B, adrRoute &J);
-/*{I.S. Sebuah gedung B memiliki daftar rute, dan setidaknya ada satu rute di daftar
- F.S. Rute terakhir di daftar rute gedung B dihapus, dan pointer R mengarah ke rute yang dihapus}*/
-void deleteAfterJalan_103022300048_103022300011(Graph &G, adrBuilding B, adrRoute Prec, adrRoute &J);
-/*{I.S. Sebuah gedung B memiliki daftar rute, dan terdapat rute setelah rute tertentu Prec
- F.S. Rute setelah Prec dihapus, dan pointer R mengarah ke rute yang dihapus}*/
-void shortestJalan_103022300048_103022300011(Graph &G, string awal, string terakhir); //Mencari rute terpendek
-/*{I.S. Graph G telah didefinisikan, serta terdapat dua gedung (start dan end) yang valid
- F.S. Menemukan dan menampilkan rute terpendek antara gedung start dan end berdasarkan weight rute}*/
+
+void deleteLastJalan_103022300048_103022300011(Graph &G, adrBuilding B, adrJalan &J){
+/*{I.S. Building memiliki daftar jalan
+ F.S. Jalan terakhir pada daftar dihapus, pointer J mengarah ke jalan yang dihapus}*/
+    if (firstJalan(B) != NULL) {
+        adrJalan P = firstJalan(B);
+        adrJalan Q = NULL;
+        while (nextJalan(P) != NULL) {
+            Q = P;
+            P = nextJalan(P);
+        }
+        if (Q == NULL) {
+            firstJalan(B) = NULL;
+        } else {
+            nextJalan(Q) = NULL;
+        }
+        J = P;
+    }
+ }
+
+void deleteAfterJalan_103022300048_103022300011(Graph &G, adrBuilding B, adrJalan Prec, adrJalan &J){
+/*{I.S. Prec adalah pointer ke jalan sebelum jalan yang akan dihapus
+ F.S. Jalan setelah Prec dihapus, pointer J mengarah ke jalan yang dihapus}*/
+    if (Prec != NULL && nextJalan(Prec) != NULL) {
+        J = nextJalan(Prec);
+        nextJalan(Prec) = nextJalan(J);
+        nextJalan(J) = NULL;
+    }
+ }
+
+adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName){ //Mencari jalan terpendek
+/*{Mengembalikan pointer ke elemen jalan dengan jarak terpendek dari gedung awal}*/
+    adrBuilding startBuilding = findBuilding(G, buildingName);
+    if (startBuilding == NULL || firstJalan(startBuilding) == NULL) {
+        return NULL;
+    }
+
+    adrJalan shortestJalan = NULL;
+    adrJalan J = firstJalan(startBuilding);
+    int shortestDistance = info(J).jarak;
+
+    while (J != NULL) {
+
+        if (info(J).jarak < shortestDistance) {
+            shortestDistance = info(J).jarak;
+            shortestJalan = J;
+        }
+        J = nextJalan(J);
+    }
+
+    return shortestJalan;
+ }
 
 
 #endif // SNK_H_INCLUDED
