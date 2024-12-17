@@ -15,7 +15,7 @@ using namespace std;
 // edge = bridge = jalan
 
 struct infotypeJalan {
-    int weight; // jalan = weight
+    int jarak; // jalan = weight
 };
 
 struct infotypeBuilding {
