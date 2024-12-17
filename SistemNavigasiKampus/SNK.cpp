@@ -27,7 +27,7 @@ adrJalan allocateJalan_103022300048_103022300011(infotypeJalan info, adrBuilding
 void addBuilding_103022300048_103022300011(Graph &G, infotypeBuilding infoBuilding){ //Menambah gedung
 /*{I.S. Graph mungkin kosong atau sudah memiliki building
  F.S. Building baru ditambahkan sebagai elemen terakhir pada graph}*/
-    adrBuilding P = allocateBuilding(infoBuilding);
+    adrBuilding P = allocateBuilding_103022300048_103022300011(infoBuilding);
     if (start(G) == NULL) {
         start(G) = P;
     } else {
@@ -42,12 +42,12 @@ void addBuilding_103022300048_103022300011(Graph &G, infotypeBuilding infoBuildi
 void addJalan_103022300048_103022300011(Graph &G, string fromBuilding, string toBuilding, int jarak){ //Menambah Rute
 /*{I.S. Dua building dengan nama fromBuilding dan toBuilding ada dalam graph
  F.S. Jalan baru ditambahkan dari fromBuilding ke toBuilding dengan jarak tertentu}*/
-    adrBuilding B1 = findBuilding(G, fromBuilding);
-    adrBuilding B2 = findBuilding(G, toBuilding);
+    adrBuilding B1 = findBuilding_103022300048_103022300011(G, fromBuilding);
+    adrBuilding B2 = findBuilding_103022300048_103022300011(G, toBuilding);
     if (B1 != NULL && B2 != NULL) {
         infotypeJalan info;
         info.jarak = jarak;
-        adrJalan newJalan = allocateJalan(info, B2);
+        adrJalan newJalan = allocateJalan_103022300048_103022300011(info, B2);
         adrJalan J = firstJalan(B1);
         if (J == NULL) {
             firstJalan(B1) = newJalan;
@@ -104,7 +104,7 @@ void deleteAfterJalan_103022300048_103022300011(Graph &G, adrBuilding B, adrJala
 
 adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName){ //Mencari jalan terpendek
 /*{Mengembalikan pointer ke elemen jalan dengan jarak terpendek dari gedung awal}*/
-    adrBuilding startBuilding = findBuilding(G, buildingName);
+    adrBuilding startBuilding = findBuilding_103022300048_103022300011(G, buildingName);
     if (startBuilding == NULL || firstJalan(startBuilding) == NULL) {
         return NULL;
     }
@@ -124,6 +124,5 @@ adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName){
 
     return shortestJalan;
  }
-
 
 #endif // SNK_H_INCLUDED
