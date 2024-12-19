@@ -77,5 +77,10 @@ void deleteAfterJalan_103022300048_103022300011(Graph &G, adrBuilding B, adrJala
 adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName); //Mencari jalan terpendek
 /*{Mengembalikan pointer ke elemen jalan dengan jarak terpendek dari gedung awal}*/
 
+adrJalan findShortestRoute(Graph G, string asal, string tujuan);
+adrJalan emergencyRoute (Graph G, adrBuilding blockedBuilding);
+adrBuilding frequentlyVisited();
+void showRouteSteps();
+
 
 #endif // SNK_H_INCLUDED
