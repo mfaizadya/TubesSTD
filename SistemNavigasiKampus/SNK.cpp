@@ -125,4 +125,22 @@ adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName){
     return shortestJalan;
  }
 
+adrJalan emergencyRoute_103022300048_103022300011(Graph G, adrBuilding blockedBuilding) {
+    if (blockedBuilding == NULL) {
+        return NULL;
+    }
+    adrBuilding curr = start(G);
+    while (curr != NULL) {
+        adrJalan edge = firstJalan(current);
+        while (edge != NULL) {
+            if (destination(edge) == blockedBuilding) {
+                info(edge).jarak = INT_MAX;
+            }
+            edge = nextJalan(edge);
+        }
+        current = nextBuilding(current);
+    }
+    return NULL;
+}
+
 #endif // SNK_H_INCLUDED
