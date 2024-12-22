@@ -78,7 +78,10 @@ adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName);
 /*{Mengembalikan pointer ke elemen jalan dengan jarak terpendek dari gedung awal}*/
 
 adrJalan findShortestRoute(Graph G, string asal, string tujuan);
+
 adrJalan emergencyRoute (Graph G, adrBuilding blockedBuilding);
+//Mengembalikan pointer ke elemen jalan alternatif terbaik (dengan bobot terpendek) yang dapat digunakan untuk menghindari bangunan yang diblokade.//
+
 adrBuilding frequentlyVisited();
 void showRouteSteps();
 
