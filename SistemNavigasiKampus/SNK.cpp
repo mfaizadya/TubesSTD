@@ -125,7 +125,10 @@ adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName){
     return shortestJalan;
  }
 
-void findShortestRoute(Graph G, string fromBuilding, string toBuilding) {
+void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, string toBuilding) {
+/*{I.S. Graph sudah terdefinisi dan berisi minimal 2 gedung
+  F.S. Menampilkan rute terpendek dari gedung asal ke gedung tujuan jika ditemukan,
+        atau pesan error jika tidak ada rute}*/
     const int MAX_GEDUNG = 100;  // Asumsi maksimum gedung
     int distances[MAX_GEDUNG];
     bool visited[MAX_GEDUNG];
@@ -238,11 +241,12 @@ void findShortestRoute(Graph G, string fromBuilding, string toBuilding) {
 
 
 adrJalan emergencyRoute_103022300048_103022300011(Graph G, adrBuilding blockedBuilding) {
+/*{Mengembalikan pointer ke elemen jalan alternatif terbaik (dengan bobot terpendek) yang dapat digunakan untuk menghindari bangunan yang diblokade.}*/
     if (blockedBuilding == NULL) {
         return NULL;
     }
-    adrBuilding curr = start(G);
-    while (curr != NULL) {
+    adrBuilding current = start(G);
+    while (current != NULL) {
         adrJalan edge = firstJalan(current);
         while (edge != NULL) {
             if (destination(edge) == blockedBuilding) {
@@ -255,4 +259,142 @@ adrJalan emergencyRoute_103022300048_103022300011(Graph G, adrBuilding blockedBu
     return NULL;
 }
 
-#endif // SNK_H_INCLUDED
+void frequentlyVisited_103022300048_103022300011(Graph G) {
+/*{I.S. Graph sudah terdefinisi
+  F.S. Menampilkan daftar gedung beserta jumlah kunjungannya}*/
+
+    if (start(G) == NULL) {
+        cout << "Graph kosong!" << endl;
+    } else {
+        // Struct untuk menyimpan data kunjungan gedung
+        struct BuildingVisit {
+            string nama;
+            int jumlahKunjungan;
+        };
+
+        // Array untuk menyimpan data kunjungan setiap gedung
+        BuildingVisit kunjungan[100];  // Maksimal 100 gedung
+        int jumlahGedung = 0;
+
+        // Step 1: Daftarkan semua gedung
+        adrBuilding P = start(G);
+        while (P != NULL) {
+            kunjungan[jumlahGedung].nama = info(P).buildingName;
+            kunjungan[jumlahGedung].jumlahKunjungan = 0;
+            jumlahGedung++;
+            P = nextBuilding(P);
+        }
+
+        // Step 2: Hitung jumlah kunjungan ke setiap gedung
+        P = start(G);
+        while (P != NULL) {
+            // Cek setiap jalan dari gedung ini
+            adrJalan J = firstJalan(P);
+            while (J != NULL) {
+                // Catat gedung tujuan sebagai dikunjungi
+                string gedungTujuan = info(destination(J)).buildingName;
+                // Tambah hitungan kunjungan untuk gedung tujuan
+                for (int i = 0; i < jumlahGedung; i++) {
+                    if (kunjungan[i].nama == gedungTujuan) {
+                        kunjungan[i].jumlahKunjungan++;
+                        break;
+                    }
+                }
+                J = nextJalan(J);
+            }
+            P = nextBuilding(P);
+        }
+
+        // Step 3: Tampilkan hasilnya
+        cout << "\nGedung yang Sering Dikunjungi:" << endl;
+        cout << "=============================" << endl;
+        for (int i = 0; i < jumlahGedung; i++) {
+            if (kunjungan[i].jumlahKunjungan > 0) {
+                cout << kunjungan[i].nama << ": dikunjungi "
+                    << kunjungan[i].jumlahKunjungan << " kali" << endl;
+            }
+        }
+    }
+}
+
+void showRouteSteps_103022300048_103022300011(Graph G, string gedungAwal, string gedungTujuan) {
+/*{I.S. Graph sudah terdefinisi dan berisi minimal 2 gedung
+  F.S. Menampilkan petunjuk arah dari gedung awal ke gedung tujuan jika ditemukan,
+        atau pesan error jika tidak ada rute}*/
+
+    if (start(G) == NULL) {
+        cout << "Graph kosong!" << endl;
+    } else {
+        // Step 1: Cek apakah kedua gedung ada
+        adrBuilding awal = findBuilding_103022300048_103022300011(G, gedungAwal);
+        adrBuilding tujuan = findBuilding_103022300048_103022300011(G, gedungTujuan);
+
+        if (awal == NULL || tujuan == NULL) {
+            cout << "Gedung tidak ditemukan!" << endl;
+            return;
+        }
+
+        // Step 2: Cari jalan dari gedung awal ke tujuan
+        cout << "\nPetunjuk Arah dari " << gedungAwal << " ke " << gedungTujuan << ":" << endl;
+        cout << "========================================" << endl;
+
+        adrBuilding current = awal;
+        int langkah = 1; // indikator iterasi ke berapa untuk case ini jadi langkah 1/ langkah 2/...
+        int totalJarak = 0;
+
+        while (current != NULL) {
+            adrJalan J = firstJalan(current);
+            bool temukanJalan = false;
+
+            // Cari jalan yang menuju ke gedung tujuan atau gedung berikutnya
+            while (J != NULL) {
+                if (destination(J) == tujuan) {
+                    cout << "Langkah " << langkah << ": Dari " << info(current).buildingName
+                        << " ke " << info(destination(J)).buildingName
+                        << " (Jarak: " << info(J).jarak << " meter)" << endl;
+                    totalJarak += info(J).jarak;
+                    temukanJalan = true;
+                    current = NULL;  // Selesai, keluar dari loop
+                    break;
+                }
+                J = nextJalan(J);
+            }
+
+            if (!temukanJalan) {
+                // Jika tidak menemukan jalan langsung ke tujuan, ambil jalan pertama
+                J = firstJalan(current);
+                if (J != NULL) {
+                    cout << "Langkah " << langkah << ": Dari " << info(current).buildingName
+                        << " ke " << info(destination(J)).buildingName
+                        << " (Jarak: " << info(J).jarak << " meter)" << endl;
+                    totalJarak += info(J).jarak;
+                    current = destination(J);
+                } else {
+                    cout << "Tidak dapat menemukan rute ke gedung tujuan." << endl;
+                    return;
+                }
+            }
+            langkah++;
+        }
+
+        cout << "\nTotal jarak: " << totalJarak << " unit" << endl;
+    }
+
+
+}
+
+ void displayMenu_103022300048_103022300011() {
+/*{I.S.
+F.S. Menampilkan list menu dari sistem navigasi kampus}*/
+
+    cout << "\n=== SISTEM NAVIGASI KAMPUS ===" << endl;
+    cout << "============================" << endl;
+    cout << "1. Tambah Gedung" << endl;
+    cout << "2. Tambah Rute/Jalan" << endl;
+    cout << "3. Cari Gedung" << endl;
+    cout << "4. Lihat Gedung yang Sering Dikunjungi" << endl;
+    cout << "5. Tampilkan Petunjuk Arah" << endl;
+    cout << "6. Cari Rute Terpendek" << endl;
+    cout << "0. Keluar" << endl;
+    cout << "Pilihan: ";
+}
