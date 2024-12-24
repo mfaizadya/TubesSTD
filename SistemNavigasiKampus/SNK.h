@@ -77,13 +77,25 @@ void deleteAfterJalan_103022300048_103022300011(Graph &G, adrBuilding B, adrJala
 adrJalan shortestJalan_103022300048_103022300011(Graph &G, string buildingName); //Mencari jalan terpendek
 /*{Mengembalikan pointer ke elemen jalan dengan jarak terpendek dari gedung awal}*/
 
-adrJalan findShortestRoute(Graph G, string asal, string tujuan);
+void findShortestRoute_103022300048_103022300011(Graph G, string asal, string tujuan);
+/*{I.S. Graph sudah terdefinisi dan berisi minimal 2 gedung
+  F.S. Menampilkan rute terpendek dari gedung asal ke gedung tujuan jika ditemukan,
+        atau pesan error jika tidak ada rute}*/
 
-adrJalan emergencyRoute (Graph G, adrBuilding blockedBuilding);
-//Mengembalikan pointer ke elemen jalan alternatif terbaik (dengan bobot terpendek) yang dapat digunakan untuk menghindari bangunan yang diblokade.//
+adrJalan emergencyRoute_103022300048_103022300011(Graph G, adrBuilding blockedBuilding);
+/*{Mengembalikan pointer ke elemen jalan alternatif terbaik (dengan bobot terpendek) yang dapat digunakan untuk menghindari bangunan yang diblokade.}*/
 
-adrBuilding frequentlyVisited();
-void showRouteSteps();
+void frequentlyVisited_103022300048_103022300011(Graph G);
+/*{I.S. Graph sudah terdefinisi
+  F.S. Menampilkan daftar gedung beserta jumlah kunjungannya}*/
 
+void showRouteSteps_103022300048_103022300011(Graph G, string gedungAwal, string gedungTujuan);
+/*{I.S. Graph sudah terdefinisi dan berisi minimal 2 gedung
+  F.S. Menampilkan petunjuk arah dari gedung awal ke gedung tujuan jika ditemukan,
+        atau pesan error jika tidak ada rute}*/
+
+void displayMenu_103022300048_103022300011();
+/*{I.S.
+  F.S. Menampilkan list menu dari sistem navigasi kampus}*/
 
 #endif // SNK_H_INCLUDED
