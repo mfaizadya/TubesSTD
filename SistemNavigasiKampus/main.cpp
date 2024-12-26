@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "SNK.h"
 
 using namespace std;
@@ -18,14 +19,28 @@ int main()
 
         switch (pilihan) {
             case 1: {
+
                 cout << "\n-- Tambah Gedung Baru --" << endl;
                 cout << "Masukkan nama gedung: ";
                 cin >> namaGedung;
 
-                infotypeBuilding newBuilding;
-                newBuilding.buildingName = namaGedung;
-                addBuilding_103022300048_103022300011(G, newBuilding);
-                cout << "Gedung berhasil ditambahkan!" << endl;
+                bool exists = false;
+                adrBuilding current = start(G); // Mengakses elemen pertama daftar gedung
+                while (current != NULL) {
+                    if (info(current).buildingName == namaGedung) {
+                        exists = true;
+                        break;
+                    }
+                    current = nextBuilding(current); // Lanjut ke gedung berikutnya
+                }
+                if (exists) {
+                    cout << "Gedung dengan nama \"" << namaGedung << "\" sudah ada!" << endl;
+                } else {
+                    infotypeBuilding newBuilding;
+                    newBuilding.buildingName = namaGedung;
+                    addBuilding_103022300048_103022300011(G, newBuilding);
+                    cout << "Gedung berhasil ditambahkan!" << endl;
+                }
                 break;
             }
 
@@ -94,7 +109,7 @@ int main()
                 cout << "Gedung tujuan: ";
                 cin >> gedungTujuan;
 
-                findShortestRoute(G, gedungAwal, gedungTujuan);
+                findShortestRoute_103022300048_103022300011(G, gedungAwal, gedungTujuan);
                 break;
             }
 
