@@ -94,8 +94,13 @@ void showRouteSteps_103022300048_103022300011(Graph G, string gedungAwal, string
   F.S. Menampilkan petunjuk arah dari gedung awal ke gedung tujuan jika ditemukan,
         atau pesan error jika tidak ada rute}*/
 
+void printMapGraph_103022300048_103022300011(Graph G);
+/*{I.S. Graph sudah terdefinisi, dapat berisi beberapa gedung dengan rutenya atau kosong
+  F.S. Menampilkan seluruh gedung beserta rutenya dalam bentuk peta}*/
+
 void displayMenu_103022300048_103022300011();
 /*{I.S.
   F.S. Menampilkan list menu dari sistem navigasi kampus}*/
+
 
 #endif // SNK_H_INCLUDED
