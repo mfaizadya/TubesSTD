@@ -172,8 +172,7 @@ void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, s
     string namaBangunan[MAX_GEDUNG];
     string path[MAX_GEDUNG];
     int jumlahGedung = 0;
-
-    // Menyimpan semua nama gedung ke array
+ 
     adrBuilding P = start(G);
     while (P != NULL) {
         namaBangunan[jumlahGedung] = info(P).buildingName;
@@ -181,14 +180,12 @@ void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, s
         P = nextBuilding(P);
     }
 
-    // Inisialisasi array distances dan visited
     for (int i = 0; i < jumlahGedung; i++) {
         distances[i] = INT_MAX;
         visited[i] = false;
         path[i] = "";
     }
-
-    // Mencari index gedung awal
+ 
     int indexGedungAwal = -1;
     for (int i = 0; i < jumlahGedung; i++) {
         if (namaBangunan[i] == fromBuilding) {
@@ -202,13 +199,11 @@ void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, s
         return;
     }
 
-    // Set jarak awal ke 0 untuk gedung awal
     distances[indexGedungAwal] = 0;
     path[indexGedungAwal] = fromBuilding;
 
     // Algoritma Dijkstra
     for (int count = 0; count < jumlahGedung - 1; count++) {
-        // Cari gedung dengan jarak minimum dari gedung yang belum dikunjungi
         int jarakMinimum = INT_MAX;
         int indexGedungMinimum = -1;
 
@@ -219,12 +214,12 @@ void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, s
             }
         }
 
-        if (indexGedungMinimum == -1) break;  // Tidak ada jalur yang tersedia
-
+        if (indexGedungMinimum == -1) {
+         break;  // Tidak ada jalur yang tersedia
+        }
         // Tandai gedung sebagai sudah dikunjungi
         visited[indexGedungMinimum] = true;
 
-        // Update jarak ke gedung tetangga
         adrBuilding gedungSaatIni = findBuilding_103022300048_103022300011(G, namaBangunan[indexGedungMinimum]);
         adrJalan J = firstJalan(gedungSaatIni);
 
@@ -250,7 +245,6 @@ void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, s
         }
     }
 
-    // Mencari index gedung tujuan
     int indexGedungTujuan = -1;
     for (int i = 0; i < jumlahGedung; i++) {
         if (namaBangunan[i] == toBuilding) {
@@ -264,7 +258,6 @@ void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, s
         return;
     }
 
-    // Tampilkan hasil
     if (distances[indexGedungTujuan] == INT_MAX) {
         cout << "Tidak ada rute yang tersedia dari " << fromBuilding
              << " ke " << toBuilding << endl;
