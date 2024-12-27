@@ -93,9 +93,21 @@ int main()
                 cin >> gedungTujuan;
                 cout << "Jarak (dalam meter): ";
                 cin >> jarak;
+                adrBuilding awal = findBuilding_103022300048_103022300011(G, gedungAwal);
+                adrBuilding tujuan = findBuilding_103022300048_103022300011(G, gedungTujuan);
 
-                addJalan_103022300048_103022300011(G, gedungAwal, gedungTujuan, jarak);
-                cout << "Rute berhasil ditambahkan!" << endl;
+                if (awal == NULL && tujuan == NULL) {
+                    cout << "Gedung awal dan tujuan tidak ditemukan" << endl;
+                } else if (awal == NULL && tujuan != NULL) {
+                    cout << "Gedung awal tidak ditemukan" << endl;
+                } else if (awal != NULL && tujuan == NULL) {
+                    cout << "Gedung tujuan tidak ditemukan" << endl;
+                } else if (awal == tujuan) {
+                    cout << "Gedung awal dan tujuan tidak boleh sama" << endl;
+                } else {
+                    addJalan_103022300048_103022300011(G, gedungAwal, gedungTujuan, jarak);
+                    cout << "Rute berhasil ditambahkan!" << endl;
+                }
                 break;
             }
 
