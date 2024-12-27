@@ -1,8 +1,5 @@
-#include <iostream>
-#include <string>
 #include "SNK.h"
 
-using namespace std;
 
 int main()
 {
