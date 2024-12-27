@@ -12,6 +12,50 @@ int main()
     string namaGedung, gedungAwal, gedungTujuan;
     int jarak;
 
+    infotypeBuilding b1;
+    b1.buildingName = "TULT";
+    addBuilding_103022300048_103022300011(G,b1);
+    infotypeBuilding b2;
+    b2.buildingName = "Asrama";
+    addBuilding_103022300048_103022300011(G,b2);
+    infotypeBuilding b3;
+    b3.buildingName = "BTP";
+    addBuilding_103022300048_103022300011(G,b3);
+    infotypeBuilding b4;
+    b4.buildingName = "GKU";
+    addBuilding_103022300048_103022300011(G,b4);
+    infotypeBuilding b5;
+    b5.buildingName = "TUCH";
+    addBuilding_103022300048_103022300011(G,b5);
+    infotypeBuilding b6;
+    b6.buildingName = "Cacuk";
+    addBuilding_103022300048_103022300011(G,b6);
+    infotypeBuilding b7;
+    b7.buildingName = "MSU";
+    addBuilding_103022300048_103022300011(G,b7);
+    infotypeBuilding b8;
+    b8.buildingName = "FIK";
+    addBuilding_103022300048_103022300011(G,b8);
+    infotypeBuilding b9;
+    b9.buildingName = "FEB";
+    addBuilding_103022300048_103022300011(G,b9);
+    infotypeBuilding b10;
+    b10.buildingName = "FIT";
+    addBuilding_103022300048_103022300011(G,b10);
+
+    addJalan_103022300048_103022300011(G, "TULT", "Asrama", 200);
+    addJalan_103022300048_103022300011(G, "TULT", "BTP", 400);
+    addJalan_103022300048_103022300011(G, "Asrama", "GKU", 500);
+    addJalan_103022300048_103022300011(G, "GKU", "Cacuk", 400);
+    addJalan_103022300048_103022300011(G, "GKU", "MSU", 600);
+    addJalan_103022300048_103022300011(G, "Cacuk", "MSU", 200);
+    addJalan_103022300048_103022300011(G, "GKU", "TUCH", 400);
+    addJalan_103022300048_103022300011(G, "TUCH", "FIK", 100);
+    addJalan_103022300048_103022300011(G, "FIK", "FEB", 120);
+    addJalan_103022300048_103022300011(G, "FIK", "FIT", 350);
+    addJalan_103022300048_103022300011(G, "FIT", "FEB", 300);
+
+
     do {
         displayMenu_103022300048_103022300011();
         cin >> pilihan;
@@ -110,6 +154,27 @@ int main()
                 cin >> gedungTujuan;
 
                 findShortestRoute_103022300048_103022300011(G, gedungAwal, gedungTujuan);
+                break;
+            }
+
+            case 7: {
+                cout << "\n-- Emergency Route --" << endl;
+                cout << "Masukkan nama gedung yang diblokir: ";
+                cin >> namaGedung;
+
+                adrBuilding blockedBuilding = findBuilding_103022300048_103022300011(G, namaGedung);
+                if (blockedBuilding != NULL) {
+                    adrJalan alternativeRoute = emergencyRoute_103022300048_103022300011(G, blockedBuilding);
+                    cout << "Rute alternatif telah dihitung. Gunakan menu 6 untuk mencari rute terpendek yang menghindari gedung ini." << endl;
+                } else {
+                    cout << "Gedung tidak ditemukan." << endl;
+                }
+                break;
+            }
+
+            case 8: {
+                cout << "\n-- Tampilkan Peta --" << endl;
+                printMapGraph_103022300048_103022300011(G);
                 break;
             }
 
