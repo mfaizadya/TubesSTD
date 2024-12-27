@@ -44,18 +44,55 @@ void addJalan_103022300048_103022300011(Graph &G, string fromBuilding, string to
  F.S. Jalan baru ditambahkan dari fromBuilding ke toBuilding dengan jarak tertentu}*/
     adrBuilding B1 = findBuilding_103022300048_103022300011(G, fromBuilding);
     adrBuilding B2 = findBuilding_103022300048_103022300011(G, toBuilding);
-    if (B1 != NULL && B2 != NULL) {
-        infotypeJalan info;
-        info.jarak = jarak;
-        adrJalan newJalan = allocateJalan_103022300048_103022300011(info, B2);
-        adrJalan J = firstJalan(B1);
-        if (J == NULL) {
-            firstJalan(B1) = newJalan;
+
+    if (B1 == NULL || B2 == NULL) {
+        cout << "Salah satu atau kedua gedung tidak ditemukan!" << endl;
+        return;
+    }
+
+    // Cek apakah rute sudah ada
+    bool routeExists = false;
+    adrJalan existingJalan = firstJalan(B1);
+    while (existingJalan != NULL) {
+        if (info(destination(existingJalan)).buildingName == toBuilding) {
+            routeExists = true;
+            break;
+        }
+        existingJalan = nextJalan(existingJalan);
+    }
+
+    if (routeExists) {
+        cout << "Rute dari " << fromBuilding << " ke " << toBuilding << " sudah ada!" << endl;
+        return;
+    } else {
+        // Tambah jalan dari fromBuilding ke toBuilding
+        infotypeJalan info1;
+        info1.jarak = jarak;
+        adrJalan newJalan1 = allocateJalan_103022300048_103022300011(info1, B2);
+
+        if (firstJalan(B1) == NULL) {
+            firstJalan(B1) = newJalan1;
         } else {
+            adrJalan J = firstJalan(B1);
             while (nextJalan(J) != NULL) {
                 J = nextJalan(J);
             }
-            nextJalan(J) = newJalan;
+            nextJalan(J) = newJalan1;
+        }
+
+        // Tambah jalan dari toBuilding ke fromBuilding
+        infotypeJalan info2;
+        info2.jarak = jarak;
+        adrJalan newJalan2 = allocateJalan_103022300048_103022300011(info2, B1);
+
+        if (firstJalan(B2) == NULL) {
+            firstJalan(B2) = newJalan2;
+        } else {
+            adrJalan J = firstJalan(B2);
+            while (nextJalan(J) != NULL) {
+                J = nextJalan(J);
+            }
+            nextJalan(J) = newJalan2;
         }
     }
  }
@@ -235,7 +272,7 @@ void findShortestRoute_103022300048_103022300011(Graph G, string fromBuilding, s
         cout << "Rute terpendek dari " << fromBuilding
              << " ke " << toBuilding << ":" << endl;
         cout << "Path: " << path[indexGedungTujuan] << endl;
-        cout << "Total jarak: " << distances[indexGedungTujuan] << endl;
+        cout << "Total jarak: " << distances[indexGedungTujuan] << " meter" << endl;
     }
 }
 
@@ -377,10 +414,40 @@ void showRouteSteps_103022300048_103022300011(Graph G, string gedungAwal, string
             langkah++;
         }
 
-        cout << "\nTotal jarak: " << totalJarak << " unit" << endl;
+        cout << "\nTotal jarak: " << totalJarak << " meter" << endl;
     }
 
 
+}
+
+void printMapGraph_103022300048_103022300011(Graph G) {
+/*{I.S. Graph sudah terdefinisi, dapat berisi beberapa gedung dengan rutenya atau kosong
+  F.S. Menampilkan seluruh gedung beserta rutenya dalam bentuk peta}*/
+    if (start(G) == NULL) {
+        cout << "Graph kosong!" << endl;
+        return;
+    }
+
+    cout << "\n=== PETA GEDUNG DAN RUTE ===" << endl;
+    cout << "============================" << endl;
+
+    adrBuilding P = start(G);
+    while (P != NULL) {
+        cout << "\nGedung: " << info(P).buildingName << endl;
+        cout << "Rute yang tersedia:" << endl;
+
+        adrJalan J = firstJalan(P);
+        if (J == NULL) {
+            cout << "- Tidak ada rute keluar" << endl;
+        } else {
+            while (J != NULL) {
+                cout << "-> " << info(destination(J)).buildingName
+                     << " (Jarak: " << info(J).jarak << " meter)" << endl;
+                J = nextJalan(J);
+            }
+        }
+        P = nextBuilding(P);
+    }
 }
 
  void displayMenu_103022300048_103022300011() {
@@ -395,6 +462,8 @@ F.S. Menampilkan list menu dari sistem navigasi kampus}*/
     cout << "4. Lihat Gedung yang Sering Dikunjungi" << endl;
     cout << "5. Tampilkan Petunjuk Arah" << endl;
     cout << "6. Cari Rute Terpendek" << endl;
+    cout << "7. Emergency Route" << endl;
+    cout << "8. Tampilkan Peta" << endl;
     cout << "0. Keluar" << endl;
     cout << "Pilihan: ";
 }
