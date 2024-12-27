@@ -104,6 +104,8 @@ int main()
                     cout << "Gedung tujuan tidak ditemukan" << endl;
                 } else if (awal == tujuan) {
                     cout << "Gedung awal dan tujuan tidak boleh sama" << endl;
+                } else if (jarak < 0) {
+                    cout << "Jarak tidak boleh bernilai negatif!" << endl;
                 } else {
                     addJalan_103022300048_103022300011(G, gedungAwal, gedungTujuan, jarak);
                     cout << "Rute berhasil ditambahkan!" << endl;
